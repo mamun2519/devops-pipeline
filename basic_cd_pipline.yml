@@ -3,3 +3,9 @@ on:
   push:
     branches: ["main"]
 #jobs section
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the repository
+      - name: "Checkout repository"
