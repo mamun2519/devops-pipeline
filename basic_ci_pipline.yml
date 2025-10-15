@@ -6,3 +6,7 @@ on:
   pull_request:
     branches: ["main"]
 # start jobs
+jobs
+  build: 
+    runs-on: "ubuntu-latest"
+    # Step 1: Checkout the repository
