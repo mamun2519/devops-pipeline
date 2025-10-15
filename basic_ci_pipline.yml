@@ -1,1 +1,6 @@
 name: "Node Js ci"
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
