@@ -1,1 +1,5 @@
 name: "My basic workflow"
+
+on:
+  push:
+    branches: ["main"]
