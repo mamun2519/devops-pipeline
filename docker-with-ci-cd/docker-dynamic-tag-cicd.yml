@@ -1,0 +1,41 @@
+name: CI/CD - Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main   # main branch এ push হলেই trigger হবে
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code (repo clone করে runner এ নিয়ে আসবে)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Login to Docker Hub
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      # Step 3: Set Dynamic Version Tag
+      # Example: v1, v2, v3...
+      - name: Set image tag
+        run: echo "IMAGE_TAG=v${{ github.run_number }}" >> $GITHUB_ENV
+
+      # Step 4: Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ env.IMAGE_TAG }} .
+
+      # Step 5: Push Docker image to Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ env.IMAGE_TAG }}
+
+      # Optional: Print which tag was pushed
+      - name: Print image info
+        run: echo "✅ Pushed version: ${{ env.IMAGE_TAG }}"
