@@ -39,3 +39,21 @@ jobs:
       # Optional: Print which tag was pushed
       - name: Print image info
         run: echo "✅ Pushed version: ${{ env.IMAGE_TAG }}"
+      # Step 6: Deploy to VPS
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: |
+            echo "Pulling latest Docker image..."
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+
+            echo "Stopping old container..."
+            docker stop myapp || true && docker rm myapp || true
+
+            echo "Starting new container..."
+            docker run -d --name myapp -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+
+            echo "✅ Deployment successful!"
