@@ -1,1 +1,5 @@
-F
+#Stage 1
+FROM node:28-alpine AS builder
+# Set working directory
+WORKDIR /app
+
