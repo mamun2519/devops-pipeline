@@ -24,5 +24,16 @@ jobs:
       # Step 4: Push the Docker image to Docker Hub
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
-      # Step 5: Deploy to VPS
+      # Step 5: Deploy to VPS by SSH
       - name: Deploy to VPS
+        env:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $key $username@$host << 'EOF'
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
+          docker stop myapp || true
+          docker rm myapp || true
+          docker run -d --name myapp -p 80:3000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
+          EOF
