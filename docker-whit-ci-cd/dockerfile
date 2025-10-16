@@ -3,3 +3,5 @@ FROM node:28-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+# Copy package.json and package-lock.json
+COPY package*.json ./
