@@ -9,4 +9,9 @@ jobs:
       #Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
-      # Step 1: Generate changelog from conventional commits
+      # Step 1: Generate changelog from conventional commits4
+      - name: Generate Changelog
+        with:
+          configuration: "default"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
