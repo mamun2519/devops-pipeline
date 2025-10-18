@@ -15,3 +15,18 @@ jobs:
           configuration: "default"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Step 2: Create Release
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          body: |
+            🚀 **New Release Published**
+            - Version: `${{ env.IMAGE_TAG }}`
+            - Docker Image: `${{ secrets.DOCKERHUB_USERNAME }}/lms-backend:${{ env.IMAGE_TAG }}`
+
+            📝 **Changelog:**
+            ${{ steps.changelog.outputs.changelog }}
