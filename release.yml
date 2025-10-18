@@ -2,3 +2,6 @@ name: "Release With Changelog"
 on:
   push:
     branches: ["main"]
+jobs:
+  release:
+    runs-on: ubuntu-latest
