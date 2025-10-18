@@ -1,35 +1,32 @@
-name: Release Notes Generate
+name: Release Workflow
 on:
   workflow_run:
-  workflows: ["Deployment Pipeline"]
-  types:
-    - completed
+    workflows: ["Build and Push Docker Image"]
+    types:
+      - completed
+permissions:
+  contents: write # This is required for creating releases
+  packages: write # Optional, if you work with packages
 jobs:
   release:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      #Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v4
-      # Step 1: Generate changelog from conventional commits4
-      - name: Generate Changelog
-        with:
-          configuration: "default"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Step 2: Create Release
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release v${{ github.run_number }}
+          tag_name: v${{ github.event.workflow_run.run_number }}
+          name: Release v${{ github.event.workflow_run.run_number }}
           body: |
             🚀 **New Release Published**
-            - Version: `${{ env.IMAGE_TAG }}`
-            - Docker Image: `${{ secrets.DOCKERHUB_USERNAME }}/lms-backend:${{ env.IMAGE_TAG }}`
+            - Version: `v${{ github.event.workflow_run.run_number }}`
+            - Docker Image: `${{ secrets.DOCKERHUB_USERNAME }}/lms-backend:v${{ github.event.workflow_run.run_number }}`
+            - Deployed: ${{ github.event.workflow_run.updated_at }}
 
-            📝 **Changelog:**
-            ${{ steps.changelog.outputs.changelog }}
+            View workflow run: ${{ github.event.workflow_run.html_url }}
+          generate_release_notes: true # GitHub automatically generates notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
