@@ -36,7 +36,7 @@ jobs
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ env.IMAGE_TAG }}
-      # Step 3: Deploy to VPS by SSH
+      # Step 6: Deploy to VPS by SSH
       - name: Deploy to VPS
         env:
           host: ${{ secrets.VPS_HOST }}
