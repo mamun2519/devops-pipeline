@@ -1,1 +1,35 @@
 name: Release Notes Generate
+on:
+  workflow_run:
+  workflows: ["Deployment Pipeline"]
+  types:
+    - completed
+jobs:
+  release:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      #Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # Step 1: Generate changelog from conventional commits4
+      - name: Generate Changelog
+        with:
+          configuration: "default"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Step 2: Create Release
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          body: |
+            🚀 **New Release Published**
+            - Version: `${{ env.IMAGE_TAG }}`
+            - Docker Image: `${{ secrets.DOCKERHUB_USERNAME }}/lms-backend:${{ env.IMAGE_TAG }}`
+
+            📝 **Changelog:**
+            ${{ steps.changelog.outputs.changelog }}
