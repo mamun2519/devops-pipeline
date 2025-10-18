@@ -9,3 +9,4 @@ jobs:
       #Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
+      # Step 1: Generate changelog from conventional commits
