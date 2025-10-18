@@ -23,9 +23,9 @@ jobs:
       # Step 4: Lint the code
       - name: Lint code
         run: npm run lint
-      # Step 4: Run tests
+      # Step 5: Run tests
       - name: Run tests
         run: npm test
-      # Step 5: Build the project
+      # Step 6: Build the project
       - name: Build project
         run: npm run build
