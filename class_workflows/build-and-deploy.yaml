@@ -10,14 +10,6 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPOSITORY_NAME }}
-          tags: |
-            type=sha,prefix=,suffix=
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
