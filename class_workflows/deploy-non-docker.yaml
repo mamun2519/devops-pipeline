@@ -10,10 +10,3 @@ env:
   VENV_PATH: /opt/flask_app/venv
   FLASK_APP: main.py
   FLASK_ENV: production
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout git repository
-        uses: actions/checkout@v4
