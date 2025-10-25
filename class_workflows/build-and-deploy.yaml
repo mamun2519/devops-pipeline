@@ -1,10 +1,5 @@
 name: Docker CI/CD
 
-env:
-  DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
-  DOCKERHUB_REPOSITORY_NAME: mycoolwebapp
-  DEPLOYMENT_SERVER_IP: ${{ secrets.INSTANCE_IP }}
-
 jobs:
   lint-check:
     runs-on: ubuntu-latest
