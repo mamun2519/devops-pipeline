@@ -1,8 +1,4 @@
 name: Docker CI/CD
-on:
-  push:
-    branches:
-      - ic-devops-batch-03
 
 env:
   DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
