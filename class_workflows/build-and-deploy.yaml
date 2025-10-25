@@ -10,12 +10,6 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: api
-          push: true
-          tags: ${{ steps.meta.outputs.tags }} #0rf1az/mycoolwebapp:7ea9e4b
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-push
