@@ -1,0 +1,27 @@
+name: CI - Lint, Test, and Build
+on:
+  push:
+    branches: ["development"]
+  pull_request:
+    branches: ["development"]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - name: Install Dependencies
+        run: npm install
+      # # check the lint code
+      # - name: Run ESLint
+      #   run: npm run lint
+      # # run the test cases
+      # - name: Run Tests
+      #   run: npm test
+      # build the project
+      - name: Build Project
+        run: npm run build
